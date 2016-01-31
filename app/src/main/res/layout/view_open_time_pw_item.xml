@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+
+    <com.mioji.incity.main.ui.DashedLine
+        android:id="@+id/dash_line"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingBottom="14dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="41dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/month_day_week_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8月25日(周一)"
+            android:textColor="@color/_8d919c"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/hour_minute_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00-18:00"
+            android:textColor="@color/_8d919c"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>
+
+

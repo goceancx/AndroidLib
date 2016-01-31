@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="46dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/filter_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical">
+
+
+            <!--<CheckBox-->
+            <!--android:id="@+id/incity_search_poi_type_view_cbx"-->
+            <!--style="@style/incity_search_filter_item"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="景点" />-->
+
+
+            <!--<CheckBox-->
+            <!--android:id="@+id/incity_search_poi_type_shop_cbx"-->
+            <!--style="@style/incity_search_filter_item"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="购物" />-->
+
+
+        </RadioGroup>
+
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#80000000" />
+
+    </LinearLayout>
+
+</LinearLayout>

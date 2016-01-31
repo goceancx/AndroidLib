@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="46dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/tag_pw_header_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#ffffff"
+                    android:text="景点筛选"
+                    android:textColor="@color/_8d919c"
+                    android:textSize="12sp" />
+
+                <GridLayout
+                    android:id="@+id/tag_pw_grid_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alignmentMode="alignMargins"
+                    android:background="#ffffff"
+                    android:columnCount="14"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:rowCount="15"/>
+
+
+                <TextView
+                    android:id="@+id/tag_pw_header_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#ffffff"
+                    android:text="景点筛选"
+                    android:textColor="@color/_8d919c"
+                    android:textSize="12sp" />
+
+                <GridLayout
+                    android:id="@+id/tag_pw_grid_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:alignmentMode="alignMargins"
+                    android:background="#ffffff"
+                    android:columnCount="15"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:rowCount="15">
+
+                </GridLayout>
+
+
+                <include layout="@layout/divider_grey_e6e7ea" />
+
+                <Button
+
+                    android:id="@+id/tag_pw_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#ffffff"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="#486CDC"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </ScrollView>
+
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#80000000" />
+
+
+    </LinearLayout>
+</LinearLayout>
