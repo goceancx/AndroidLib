@@ -132,8 +132,6 @@ public class RangeSeekBar extends FrameLayout {
         line_img = (ImageView) getChildAt(0);
         minValue = 0;
         maxValue = 24 * 60 * 60;
-
-
     }
 
     @Override
@@ -233,7 +231,6 @@ public class RangeSeekBar extends FrameLayout {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);
         canvas.drawText(right_img.getLeft() % 100 + ":" + right_img.getLeft() % 100, left + 15, top + 30, paint);
-
 
     }
 
