@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <com.oceancx.androidlib.widget.RangeSeekBar
+        android:id="@+id/seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -24,15 +29,14 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:scaleType="fitXY"
-            android:src="@drawable/shape_circle_white" />
+            android:src="@mipmap/seekbar_handler" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="80dp"
             android:scaleType="fitXY"
-            android:src="@drawable/shape_circle_white" />
+            android:src="@mipmap/seekbar_handler" />
 
 
     </com.oceancx.androidlib.widget.RangeSeekBar>
