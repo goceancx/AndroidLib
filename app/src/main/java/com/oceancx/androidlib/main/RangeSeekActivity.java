@@ -19,12 +19,6 @@ public class RangeSeekActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.range_seekbar_activity);
         seekBar = (RangeSeekBar) findViewById(R.id.seekbar);
-        findViewById(R.id.bt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                seekBar.setRangeValue(8 * 60 * 60, 20 * 60 * 60);
-            }
-        });
 
     }
 

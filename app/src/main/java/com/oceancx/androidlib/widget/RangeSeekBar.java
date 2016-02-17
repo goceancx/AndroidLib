@@ -1,6 +1,7 @@
 package com.oceancx.androidlib.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,10 +18,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.oceancx.androidlib.DebugLog;
+import com.oceancx.androidlib.R;
 
 
 /**
  * 上面的消息框的spec
+ * 带改进成支持多指触控的.
  * Created by oceancx on 16/1/8.
  */
 public class RangeSeekBar extends FrameLayout {
@@ -30,16 +33,20 @@ public class RangeSeekBar extends FrameLayout {
     ImageView line_img;
     Paint paint;
     int maxValue, minValue;
-    final int _24hourSeconds = 24 * 60 * 60;
+    int initMinValue, initMaxValue;
     ViewDragHelper helper;
     boolean firstLayout = true;
     int color_blue = 0xff486cdc;
     double field_min, field_max, field_len;
+    final int MODE_TIME = 0;
+    final int MODE_MAX_MIN_VALUE = 1;
+    int mode = MODE_TIME;
 
 
     ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
         boolean hit_sec = true;
         boolean hit_first = true;
+
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
@@ -122,16 +129,32 @@ public class RangeSeekBar extends FrameLayout {
 
     public RangeSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
+        final TypedArray a = context.obtainStyledAttributes(
+                attrs, R.styleable.RangeSeekBar, defStyleAttr, defStyleAttr);
+        mode = a.getInteger(R.styleable.RangeSeekBar_mode, -1);
+        if (mode == -1) mode = MODE_TIME;
+        if (mode == MODE_TIME) {
+            minValue = 0;
+            maxValue = 60 * 60 * 24;
+        } else {
+            minValue = a.getInteger(R.styleable.RangeSeekBar_min_value, -1);
+            if (minValue == -1) minValue = 0;
 
-    private void init(Context context) {
+            maxValue = a.getInteger(R.styleable.RangeSeekBar_max_value, -1);
+            if (maxValue == -1) maxValue = Integer.MAX_VALUE;
+        }
+        initMinValue = a.getInteger(R.styleable.RangeSeekBar_init_min_value, minValue);
+        initMaxValue = a.getInteger(R.styleable.RangeSeekBar_init_max_value, maxValue);
+
+        a.recycle();
+
+
         helper = ViewDragHelper.create(this, callback);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         setWillNotDraw(false);
-        minValue = 8 * 60 * 60;
-        maxValue = 20 * 60 * 60;
+
     }
+
 
     @Override
     protected void onFinishInflate() {
@@ -188,19 +211,14 @@ public class RangeSeekBar extends FrameLayout {
             field_len = field_max - field_min;
         }
 
-        int img_left, img_right;
-        img_left = (int) (minValue * 1.0f * field_len / _24hourSeconds) + getPaddingLeft();
-        img_right = img_left + left_img.getMeasuredWidth();
-        DebugLog.e("l:" + img_left + "r:" + img_right);
-//            left_img.layout(img_left, left_img.getTop(), img_right, left_img.getBottom());
-        left_img.offsetLeftAndRight(img_left - getPaddingLeft());
 
-        img_left = (int) (maxValue * 1.0f * field_len / _24hourSeconds) + getPaddingLeft() + left_img.getMeasuredWidth();
-        img_right = img_left + right_img.getMeasuredWidth();
-        DebugLog.e("2 ---  l:" + img_left + "r:" + img_right);
-//            right_img.layout(img_left, right_img.getTop(), img_right, right_img.getBottom());
-        right_img.offsetLeftAndRight(img_left - getPaddingLeft());
+        int img_left;
 
+        img_left = (int) (initMinValue * 1.0f * field_len / (maxValue - minValue));
+        left_img.offsetLeftAndRight(img_left);
+
+        img_left = (int) (initMaxValue * 1.0f * field_len / (maxValue - minValue)) + left_img.getMeasuredWidth();
+        right_img.offsetLeftAndRight(img_left);
 
     }
 
@@ -236,9 +254,8 @@ public class RangeSeekBar extends FrameLayout {
 
         left = (int) (left_img.getLeft() + half_left_img_w - pxToDp(100) / 2);
         top = left_img.getTop() - left_img.getMeasuredHeight();
-        minValue = (int) ((left_img.getRight() - left_img.getMeasuredWidth() - getPaddingLeft()) / field_len * _24hourSeconds);
-
-        drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, secToHHMM(minValue));
+        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * maxValue);
+        drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMinValue);
 
 
         int half_right_img_w = right_img.getMeasuredWidth() / 2;
@@ -246,8 +263,8 @@ public class RangeSeekBar extends FrameLayout {
         left = (int) (right_img.getLeft() + half_right_img_w - pxToDp(100) / 2);
         top = right_img.getTop() - right_img.getMeasuredHeight();
 
-        maxValue = (int) ((right_img.getLeft() - left_img.getMeasuredWidth() - getPaddingLeft()) / field_len * _24hourSeconds);
-        drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, secToHHMM(maxValue));
+        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * maxValue);
+        drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMaxValue);
     }
 
     private String secToHHMM(int sec) {
@@ -256,12 +273,11 @@ public class RangeSeekBar extends FrameLayout {
         hour = sec / 60 / 60;
         min = (sec - hour * 60 * 60) / 60;
 
-
         return (hour < 10 ? "0" + hour : "" + hour) + ":" +
                 (min < 10 ? "0" + min : "" + min);
     }
 
-    private void drawBlueRoundRectWithDownTriangleWithText(Canvas canvas, float x, float y, String text) {
+    private void drawBlueRoundRectWithDownTriangleWithText(Canvas canvas, float x, float y, int value) {
         /**
          * 画圆角矩形 还有 下面的三角形
          * spec rect : w : 100  h : 40 radius : 8
@@ -294,7 +310,10 @@ public class RangeSeekBar extends FrameLayout {
         int baseline = (int) ((roundRect.bottom + roundRect.top - fontMetrics.bottom - fontMetrics.top) / 2);
         // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(text, roundRect.centerX(), baseline, paint);
+        if (mode == MODE_TIME)
+            canvas.drawText(secToHHMM(value), roundRect.centerX(), baseline, paint);
+        else if (MODE_MAX_MIN_VALUE == mode)
+            canvas.drawText(String.valueOf(value), roundRect.centerX(), baseline, paint);
 
     }
 
@@ -305,19 +324,15 @@ public class RangeSeekBar extends FrameLayout {
     }
 
 
-    public int getMinValue() {
-        return minValue;
-    }
-
-    public int getMaxValue() {
-        return maxValue;
-    }
-
-    public void setRangeValue(int minValue, int maxValue) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    public void setMode(int mode) {
+        if (mode > 1) return;
+        this.mode = mode;
         firstLayout = true;
         requestLayout();
+    }
+
+    public void setInitMinMaxRange() {
+
     }
 
     @Override
