@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.oceancx.androidlib.main.RangeSeekActivity;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,6 +58,7 @@ public class MainActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent();
+                intent.setClassName(packageName, mActivities.get(position).name);
                 startActivity(intent);
             }
 
