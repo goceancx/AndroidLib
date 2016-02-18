@@ -1,1 +1,1 @@
-include ':app', ':uilib'
+include ':app', ':uilib', ':rangeseekbar'

@@ -1,4 +1,4 @@
-package com.oceancx.androidlib.widget;
+package com.oceancx.rangeseekbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.oceancx.androidlib.DebugLog;
-import com.oceancx.androidlib.R;
-
 
 /**
  * 上面的消息框的spec
@@ -28,6 +25,8 @@ import com.oceancx.androidlib.R;
  */
 public class RangeSeekBar extends FrameLayout {
 
+    final int MODE_TIME = 0;
+    final int MODE_MAX_MIN_VALUE = 1;
     View left_img;
     View right_img;
     ImageView line_img;
@@ -36,10 +35,8 @@ public class RangeSeekBar extends FrameLayout {
     int initMinValue, initMaxValue;
     ViewDragHelper helper;
     boolean firstLayout = true;
-    int color_blue = 0xff486cdc;
+    int color_blue = 0xff3F51B5;
     double field_min, field_max, field_len;
-    final int MODE_TIME = 0;
-    final int MODE_MAX_MIN_VALUE = 1;
     int mode = MODE_TIME;
 
 
@@ -83,7 +80,7 @@ public class RangeSeekBar extends FrameLayout {
 
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            DebugLog.e("changedView :" + changedView.getLeft() + " left:" + left + " top:" + top + " dx:" + dx + " dy:" + dy);
+//            DebugLog.e("changedView :" + changedView.getLeft() + " left:" + left + " top:" + top + " dx:" + dx + " dy:" + dy);
             if (changedView == left_img) {
                 //left_img右滑撞到right_img
                 if (left + left_img.getMeasuredWidth() - dx == right_img.getLeft() && dx > 0) {
@@ -252,7 +249,7 @@ public class RangeSeekBar extends FrameLayout {
 
         int half_left_img_w = left_img.getMeasuredWidth() / 2;
 
-        left = (int) (left_img.getLeft() + half_left_img_w - pxToDp(100) / 2);
+        left = (int) (left_img.getLeft() + half_left_img_w - spec_2x_ToDp(100) / 2);
         top = left_img.getTop() - left_img.getMeasuredHeight();
         initMinValue = (int) ((left_img.getRight() - field_min) / field_len * maxValue);
         drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMinValue);
@@ -260,7 +257,7 @@ public class RangeSeekBar extends FrameLayout {
 
         int half_right_img_w = right_img.getMeasuredWidth() / 2;
 
-        left = (int) (right_img.getLeft() + half_right_img_w - pxToDp(100) / 2);
+        left = (int) (right_img.getLeft() + half_right_img_w - spec_2x_ToDp(100) / 2);
         top = right_img.getTop() - right_img.getMeasuredHeight();
 
         initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * maxValue);
@@ -290,18 +287,18 @@ public class RangeSeekBar extends FrameLayout {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color_blue);
 
-        RectF roundRect = new RectF(x, y, x + pxToDp(100), y + pxToDp(40));// 设置个新的长方形
+        RectF roundRect = new RectF(x, y, x + spec_2x_ToDp(100), y + spec_2x_ToDp(40));// 设置个新的长方形
         canvas.drawRoundRect(roundRect, 8, 8, paint);
         Path path = new Path();
-        path.moveTo(x + pxToDp(45), y + pxToDp(40));
-        path.lineTo(x + pxToDp(50), y + pxToDp(45));
-        path.lineTo(x + pxToDp(55), y + pxToDp(40));
+        path.moveTo(x + spec_2x_ToDp(45), y + spec_2x_ToDp(40));
+        path.lineTo(x + spec_2x_ToDp(50), y + spec_2x_ToDp(45));
+        path.lineTo(x + spec_2x_ToDp(55), y + spec_2x_ToDp(40));
         path.close();
         canvas.drawPath(path, paint);
 
         paint.reset();
         paint.setAntiAlias(true);
-        paint.setTextSize(pxToDp(24));
+        paint.setTextSize(spec_2x_ToDp(24));
         paint.setColor(Color.WHITE);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
 
@@ -318,7 +315,7 @@ public class RangeSeekBar extends FrameLayout {
     }
 
 
-    private float pxToDp(int pix) {
+    private float spec_2x_ToDp(int pix) {
         final float scale = getResources().getDisplayMetrics().density;
         return pix / 2f * scale;
     }
