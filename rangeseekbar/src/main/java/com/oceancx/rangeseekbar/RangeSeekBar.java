@@ -25,8 +25,8 @@ import android.widget.ImageView;
  */
 public class RangeSeekBar extends FrameLayout {
 
-    final int MODE_TIME = 0;
-    final int MODE_MAX_MIN_VALUE = 1;
+    public static final int MODE_TIME = 0;
+    public static final int MODE_MAX_MIN_VALUE = 1;
     View left_img;
     View right_img;
     ImageView line_img;
@@ -35,10 +35,12 @@ public class RangeSeekBar extends FrameLayout {
     int initMinValue, initMaxValue;
     ViewDragHelper helper;
     boolean firstLayout = true;
-    int color_blue = 0xff3F51B5;
+    int color_red = 0xffFF4081;
     double field_min, field_max, field_len;
     int mode = MODE_TIME;
 
+
+    int lastDx = 0;
 
     ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
         boolean hit_sec = true;
@@ -66,7 +68,9 @@ public class RangeSeekBar extends FrameLayout {
                 if (left < getPaddingLeft()) left = getPaddingLeft();
                 if (left > getMeasuredWidth() - right_img.getMeasuredWidth() - left_img.getMeasuredWidth() - getPaddingRight())
                     left = getMeasuredWidth() - right_img.getMeasuredWidth() - left_img.getMeasuredWidth() - getPaddingRight();
-            } else if (child == right_img) {
+            }
+
+            if (child == right_img) {
                 if (left < left_img.getMeasuredWidth() + getPaddingLeft()) {
                     left = left_img.getMeasuredWidth() + getPaddingLeft();
                 }
@@ -95,7 +99,9 @@ public class RangeSeekBar extends FrameLayout {
                 } else {
                     hit_sec = false;
                 }
-            } else if (changedView == right_img) {
+            }
+
+            if (changedView == right_img) {
                 //right_img左滑撞到左边img
                 if (left - dx == left_img.getRight() && dx < 0) {
                     if (hit_first) {
@@ -114,7 +120,11 @@ public class RangeSeekBar extends FrameLayout {
         }
 
     };
-    boolean lockDraw = false;
+
+    int rect_w = 42, rect_h = 20, rect_radius = 8;
+    int triangle_b = 8, triangl_h = 4;
+    int font_size = 14;
+
 
     public RangeSeekBar(Context context) {
         this(context, null);
@@ -123,6 +133,7 @@ public class RangeSeekBar extends FrameLayout {
     public RangeSeekBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
 
     public RangeSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -152,7 +163,6 @@ public class RangeSeekBar extends FrameLayout {
 
     }
 
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -167,7 +177,6 @@ public class RangeSeekBar extends FrameLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return helper.shouldInterceptTouchEvent(ev);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -209,13 +218,11 @@ public class RangeSeekBar extends FrameLayout {
         }
 
 
-        int img_left;
+        lastDx = (int) ((initMinValue - minValue) * 1.0f * field_len / (maxValue - minValue));
+        left_img.offsetLeftAndRight(lastDx);
 
-        img_left = (int) (initMinValue * 1.0f * field_len / (maxValue - minValue));
-        left_img.offsetLeftAndRight(img_left);
-
-        img_left = (int) (initMaxValue * 1.0f * field_len / (maxValue - minValue)) + left_img.getMeasuredWidth();
-        right_img.offsetLeftAndRight(img_left);
+        lastDx = (int) ((initMaxValue - minValue) * 1.0f * field_len / (maxValue - minValue));
+        right_img.offsetLeftAndRight(lastDx + left_img.getMeasuredWidth());
 
     }
 
@@ -225,44 +232,41 @@ public class RangeSeekBar extends FrameLayout {
         helper = null;
     }
 
-
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (lockDraw) return;
 
         paint.reset();
-        paint.setColor(color_blue);
+        //红色
+        paint.setColor(0xffFF4081);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(line_img.getMeasuredHeight());
 
         int left, right, top, bottom;
         int half_line_img_h = line_img.getMeasuredHeight() / 2;
-        int half_line_img_w = line_img.getMeasuredHeight() / 2;
 
         left = left_img.getRight();
         top = line_img.getTop() + half_line_img_h;
         right = right_img.getLeft();
-        bottom = line_img.getTop() + half_line_img_w;
+        bottom = line_img.getTop() + half_line_img_h;
         //画遮盖线
         canvas.drawLine(left, top, right, bottom, paint);
 
         int half_left_img_w = left_img.getMeasuredWidth() / 2;
-
-        left = (int) (left_img.getLeft() + half_left_img_w - spec_2x_ToDp(100) / 2);
-        top = left_img.getTop() - left_img.getMeasuredHeight();
-        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * maxValue);
+        left = (int) (left_img.getLeft() + half_left_img_w - pxToDp(rect_w) / 2);
+        top = (int) (left_img.getTop() - pxToDp(rect_h + triangl_h));
+        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * (maxValue + minValue));
         drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMinValue);
 
 
         int half_right_img_w = right_img.getMeasuredWidth() / 2;
-
-        left = (int) (right_img.getLeft() + half_right_img_w - spec_2x_ToDp(100) / 2);
-        top = right_img.getTop() - right_img.getMeasuredHeight();
-
-        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * maxValue);
+        left = (int) (right_img.getLeft() + half_right_img_w - pxToDp(rect_w) / 2);
+        top = (int) (right_img.getTop() - pxToDp(rect_h + triangl_h));
+//        top = (int) (right_img.getBottom() + pxToDp(triangl_h));
+        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * (maxValue + minValue));
         drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMaxValue);
     }
+
 
     private String secToHHMM(int sec) {
 
@@ -285,20 +289,20 @@ public class RangeSeekBar extends FrameLayout {
         if (paint == null) paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.reset();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(color_blue);
+        paint.setColor(color_red);
 
-        RectF roundRect = new RectF(x, y, x + spec_2x_ToDp(100), y + spec_2x_ToDp(40));// 设置个新的长方形
-        canvas.drawRoundRect(roundRect, 8, 8, paint);
+        RectF roundRect = new RectF(x, y, x + pxToDp(rect_w), y + pxToDp(rect_h));// 设置个新的长方形
+        canvas.drawRoundRect(roundRect, rect_radius, rect_radius, paint);
         Path path = new Path();
-        path.moveTo(x + spec_2x_ToDp(45), y + spec_2x_ToDp(40));
-        path.lineTo(x + spec_2x_ToDp(50), y + spec_2x_ToDp(45));
-        path.lineTo(x + spec_2x_ToDp(55), y + spec_2x_ToDp(40));
+        path.moveTo(x + pxToDp(rect_w / 2 - triangle_b / 2), y + pxToDp(rect_h));
+        path.lineTo(x + pxToDp(rect_w / 2), y + pxToDp(rect_h + triangl_h));
+        path.lineTo(x + pxToDp(rect_w / 2 + triangle_b / 2), y + pxToDp(rect_h));
         path.close();
         canvas.drawPath(path, paint);
 
         paint.reset();
         paint.setAntiAlias(true);
-        paint.setTextSize(spec_2x_ToDp(24));
+        paint.setTextSize(pxToDp(font_size));
         paint.setColor(Color.WHITE);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
 
@@ -314,10 +318,43 @@ public class RangeSeekBar extends FrameLayout {
 
     }
 
+    private void drawBlueRoundRectWithUpTriangleWithText(Canvas canvas, int x, int y, int value) {
+        if (paint == null) paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.reset();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color_red);
 
-    private float spec_2x_ToDp(int pix) {
+        RectF roundRect = new RectF(x, y, x + pxToDp(rect_w), y + pxToDp(rect_h));// 设置个新的长方形
+        canvas.drawRoundRect(roundRect, rect_radius, rect_radius, paint);
+
+        Path path = new Path();
+        path.moveTo(x + pxToDp(rect_w / 2 - triangle_b / 2), y);
+        path.lineTo(x + pxToDp(rect_w / 2), y - pxToDp(triangl_h));
+        path.lineTo(x + pxToDp(rect_w / 2 + triangle_b / 2), y);
+        path.close();
+        canvas.drawPath(path, paint);
+
+        paint.reset();
+        paint.setAntiAlias(true);
+        paint.setTextSize(pxToDp(font_size));
+        paint.setColor(Color.WHITE);
+        paint.setTypeface(Typeface.DEFAULT_BOLD);
+
+        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+        // 转载请注明出处：http://blog.csdn.net/hursing
+        int baseline = (int) ((roundRect.bottom + roundRect.top - fontMetrics.bottom - fontMetrics.top) / 2);
+        // 下面这行是实现水平居中，drawText对应改为传入targetRect.centerX()
+        paint.setTextAlign(Paint.Align.CENTER);
+        if (mode == MODE_TIME)
+            canvas.drawText(secToHHMM(value), roundRect.centerX(), baseline, paint);
+        else if (MODE_MAX_MIN_VALUE == mode)
+            canvas.drawText(String.valueOf(value), roundRect.centerX(), baseline, paint);
+    }
+
+
+    private float pxToDp(int pix) {
         final float scale = getResources().getDisplayMetrics().density;
-        return pix / 2f * scale;
+        return pix * scale;
     }
 
 
@@ -328,13 +365,26 @@ public class RangeSeekBar extends FrameLayout {
         requestLayout();
     }
 
-    public void setInitMinMaxRange() {
-
+    public void setSeekRange(int mode, int min, int max) {
+        setSeekRange(mode, min, max, min, max);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public void setSeekRange(int mode, int min, int max, int initMin, int initMax) {
+        if (mode > 1) return;
+        this.mode = mode;
+        this.minValue = min;
+        this.maxValue = max;
+        this.initMinValue = initMin;
+        this.initMaxValue = initMax;
+        firstLayout = true;
+        requestLayout();
+    }
 
+    public int getInitMinValue() {
+        return initMinValue;
+    }
+
+    public int getInitMaxValue() {
+        return initMaxValue;
     }
 }

@@ -6,22 +6,27 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/toggle_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:onClick="onToggleButtonClick"
+        android:text="clickTo重新设置RangeSeekBar"
+        android:textSize="16sp" />
 
     <com.oceancx.rangeseekbar.RangeSeekBar
         android:id="@+id/seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:paddingBottom="30dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="55dp"
+        android:paddingTop="30dp"
         app:init_max_value="36000"
+
         app:init_min_value="3600"
         app:mode="0">
-
 
         <ImageView
             android:layout_width="match_parent"
