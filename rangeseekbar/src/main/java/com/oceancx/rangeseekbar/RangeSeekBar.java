@@ -122,7 +122,7 @@ public class RangeSeekBar extends FrameLayout {
     };
 
     int rect_w = 42, rect_h = 20, rect_radius = 8;
-    int triangle_b = 8, triangl_h = 4;
+    int triangle_b = 8, triangle_h = 4;
     int font_size = 14;
 
 
@@ -254,17 +254,17 @@ public class RangeSeekBar extends FrameLayout {
 
         int half_left_img_w = left_img.getMeasuredWidth() / 2;
         left = (int) (left_img.getLeft() + half_left_img_w - pxToDp(rect_w) / 2);
-        top = (int) (left_img.getTop() - pxToDp(rect_h + triangl_h));
-        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * (maxValue + minValue));
+        top = (int) (left_img.getTop() - pxToDp(rect_h + triangle_h));
+        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * (maxValue - minValue) + minValue);
         drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMinValue);
 
 
         int half_right_img_w = right_img.getMeasuredWidth() / 2;
         left = (int) (right_img.getLeft() + half_right_img_w - pxToDp(rect_w) / 2);
-        top = (int) (right_img.getTop() - pxToDp(rect_h + triangl_h));
-//        top = (int) (right_img.getBottom() + pxToDp(triangl_h));
-        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * (maxValue + minValue));
-        drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMaxValue);
+//        top = (int) (right_img.getTop() - pxToDp(rect_h + triangle_h));
+        top = (int) (right_img.getBottom() + pxToDp(triangle_h));
+        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * (maxValue - minValue) + minValue);
+        drawBlueRoundRectWithUpTriangleWithText(canvas, left, top, initMaxValue);
     }
 
 
@@ -290,12 +290,12 @@ public class RangeSeekBar extends FrameLayout {
         paint.reset();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color_red);
-
+//        canvas.clipRect(x, y, x + pxToDp(rect_w), y + pxToDp(rect_h + triangle_h));
         RectF roundRect = new RectF(x, y, x + pxToDp(rect_w), y + pxToDp(rect_h));// 设置个新的长方形
         canvas.drawRoundRect(roundRect, rect_radius, rect_radius, paint);
         Path path = new Path();
         path.moveTo(x + pxToDp(rect_w / 2 - triangle_b / 2), y + pxToDp(rect_h));
-        path.lineTo(x + pxToDp(rect_w / 2), y + pxToDp(rect_h + triangl_h));
+        path.lineTo(x + pxToDp(rect_w / 2), y + pxToDp(rect_h + triangle_h));
         path.lineTo(x + pxToDp(rect_w / 2 + triangle_b / 2), y + pxToDp(rect_h));
         path.close();
         canvas.drawPath(path, paint);
@@ -324,12 +324,13 @@ public class RangeSeekBar extends FrameLayout {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color_red);
 
+//        canvas.clipRect(x, y - triangle_h, x + pxToDp(rect_w), y + pxToDp(rect_h));
         RectF roundRect = new RectF(x, y, x + pxToDp(rect_w), y + pxToDp(rect_h));// 设置个新的长方形
         canvas.drawRoundRect(roundRect, rect_radius, rect_radius, paint);
 
         Path path = new Path();
         path.moveTo(x + pxToDp(rect_w / 2 - triangle_b / 2), y);
-        path.lineTo(x + pxToDp(rect_w / 2), y - pxToDp(triangl_h));
+        path.lineTo(x + pxToDp(rect_w / 2), y - pxToDp(triangle_h));
         path.lineTo(x + pxToDp(rect_w / 2 + triangle_b / 2), y);
         path.close();
         canvas.drawPath(path, paint);
@@ -377,6 +378,7 @@ public class RangeSeekBar extends FrameLayout {
         this.initMinValue = initMin;
         this.initMaxValue = initMax;
         firstLayout = true;
+        invalidate();
         requestLayout();
     }
 
