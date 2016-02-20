@@ -378,6 +378,7 @@ public class RangeSeekBar extends FrameLayout {
         this.initMinValue = initMin;
         this.initMaxValue = initMax;
         firstLayout = true;
+        //这句话 位置比较关键
         invalidate();
         requestLayout();
     }

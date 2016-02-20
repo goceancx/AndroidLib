@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="#f1f1f1"
+    android:orientation="vertical">
+
+    <!--android:background="#cda"-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+
+    <FrameLayout
+        android:id="@+id/header_hanging_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+
+        <ProgressBar
+            android:id="@+id/header_pgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="60dp"
+            android:indeterminateDrawable="@drawable/pgb_circle"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/header_down_arrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="60dp"
+            android:src="@drawable/ic_arrow_downward_black_18dp"
+            android:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/pull_to_refresh_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="下拉刷新" />
+    </FrameLayout>
+
+
+</LinearLayout>

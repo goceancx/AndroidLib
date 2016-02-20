@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidLib.iml" filepath="$PROJECT_DIR$/AndroidLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pulltorefreshandloadmore/pulltorefreshandloadmore.iml" filepath="$PROJECT_DIR$/pulltorefreshandloadmore/pulltorefreshandloadmore.iml" />
       <module fileurl="file://$PROJECT_DIR$/rangeseekbar/rangeseekbar.iml" filepath="$PROJECT_DIR$/rangeseekbar/rangeseekbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/uilib/uilib.iml" filepath="$PROJECT_DIR$/uilib/uilib.iml" />
     </modules>
