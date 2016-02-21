@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.oceancx.androidlib.main.PullToRefreshAndLoadMoreActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -19,7 +21,7 @@ public class MainActivity extends ListActivity {
     private ActivityInfo target;
     private ArrayList<ActivityInfo> mActivities;
     private String packageName = "com.oceancx.androidlib";
-    private String desiredPackageName = "RangeSeekActivity";
+    private String desiredPackageName = "PullToRefreshAndLoadMoreActivity";
 
 
     protected void onCreate(Bundle savedInstanceState) {

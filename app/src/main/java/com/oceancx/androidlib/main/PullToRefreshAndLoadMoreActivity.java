@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.oceancx.androidlib.R;
 import com.oceancx.pulltorefreshandloadmore.PullToFreshAndLordMoreLayout;
 
 

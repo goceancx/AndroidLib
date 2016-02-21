@@ -5,9 +5,11 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -57,6 +59,9 @@ public class PullToFreshAndLordMoreLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mViewDragHelper = ViewDragHelper.create(this, new DragHelperCallback());
+        /**
+         * 这里的话 要自己对孩子进行添加Header 和 footer
+         */
 
     }
 
@@ -68,10 +73,15 @@ public class PullToFreshAndLordMoreLayout extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         //    initData();
-        header = findViewById(R.id.header);
-        body = findViewById(R.id.body);
-        footer = findViewById(R.id.footer);
-        mRecyclerView = (RecyclerView) body.findViewById(R.id.ryc_views);
+
+        ViewGroup ll_parent = (ViewGroup) getChildAt(0);
+        body = ll_parent.getChildAt(0);
+        mRecyclerView = (RecyclerView) ((ViewGroup) body).getChildAt(0);
+        header = LayoutInflater.from(getContext()).inflate(R.layout.pull_to_refresh_header, ll_parent, false);
+        footer = LayoutInflater.from(getContext()).inflate(R.layout.pull_to_refresh_footer, ll_parent, false);
+        ll_parent.addView(header, 0);
+        ll_parent.addView(footer);
+
         header_hanging_layout = header.findViewById(R.id.header_hanging_layout);
         header_pgb = (ProgressBar) header.findViewById(R.id.header_pgb);
         header_down_arrow = (ImageView) header.findViewById(R.id.header_down_arrow_img);
