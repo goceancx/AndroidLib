@@ -50,6 +50,18 @@ public class RangeSeekBar extends FrameLayout {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
+            if (mode == MODE_TIME) {
+                /**
+                 * 将minValue和maxValue规定到半小时的刻度
+                 */
+                int half_h = 60 * 30;
+                initMinValue = initMinValue / half_h * half_h;
+                initMaxValue = initMaxValue / half_h * half_h;
+                firstLayout = true;
+
+                requestLayout();
+                invalidate();
+            }
         }
 
         @Override
@@ -68,16 +80,25 @@ public class RangeSeekBar extends FrameLayout {
                 if (left < getPaddingLeft()) left = getPaddingLeft();
                 if (left > getMeasuredWidth() - right_img.getMeasuredWidth() - left_img.getMeasuredWidth() - getPaddingRight())
                     left = getMeasuredWidth() - right_img.getMeasuredWidth() - left_img.getMeasuredWidth() - getPaddingRight();
-            }
 
-            if (child == right_img) {
+                initMinValue = (int) ((left_img.getRight() - field_min) * (maxValue - minValue) / field_len) + minValue;
+                if (hit_sec && dx > 0)
+                    initMaxValue = (int) ((right_img.getLeft() - field_min) * (maxValue - minValue) / field_len) + minValue;
+
+            } else if (child == right_img) {
                 if (left < left_img.getMeasuredWidth() + getPaddingLeft()) {
                     left = left_img.getMeasuredWidth() + getPaddingLeft();
                 }
                 if (left > getMeasuredWidth() - right_img.getMeasuredWidth() - getPaddingRight()) {
                     left = getMeasuredWidth() - right_img.getMeasuredWidth() - getPaddingRight();
                 }
+                if (hit_first && dx < 0)
+                    initMinValue = (int) ((left_img.getRight() - field_min) * (maxValue - minValue) / field_len) + minValue;
+                initMaxValue = (int) ((right_img.getLeft() - field_min) * (maxValue - minValue) / field_len) + minValue;
+
             }
+
+
             invalidate();
             return left;
         }
@@ -93,15 +114,14 @@ public class RangeSeekBar extends FrameLayout {
                         return;
                     }
                 }
-                if (-(left + left_img.getMeasuredWidth() - right_img.getLeft()) <= helper.getTouchSlop() && dx > 0) {
+                if (-(left + left_img.getMeasuredWidth() - right_img.getLeft()) <= helper.getTouchSlop() / 3 && dx > 0) {
                     left_img.offsetLeftAndRight(-(left + left_img.getMeasuredWidth() - right_img.getLeft()));
+                    initMinValue = (int) ((left_img.getRight() - field_min) * (maxValue - minValue) / field_len) + minValue;
                     hit_sec = true;
                 } else {
                     hit_sec = false;
                 }
-            }
-
-            if (changedView == right_img) {
+            } else if (changedView == right_img) {
                 //right_img左滑撞到左边img
                 if (left - dx == left_img.getRight() && dx < 0) {
                     if (hit_first) {
@@ -109,12 +129,14 @@ public class RangeSeekBar extends FrameLayout {
                         return;
                     }
                 }
-                if ((left - left_img.getRight()) <= helper.getTouchSlop() && dx < 0) {
+                if ((left - left_img.getRight()) <= helper.getTouchSlop() / 3 && dx < 0) {
                     right_img.offsetLeftAndRight(-(left - left_img.getRight()));
+                    initMaxValue = (int) ((right_img.getLeft() - field_min) * (maxValue - minValue) / field_len) + minValue;
                     hit_first = true;
                 } else {
                     hit_first = false;
                 }
+
             }
 
         }
@@ -139,7 +161,7 @@ public class RangeSeekBar extends FrameLayout {
         super(context, attrs, defStyleAttr);
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.RangeSeekBar, defStyleAttr, defStyleAttr);
-        mode = a.getInteger(R.styleable.RangeSeekBar_mode, -1);
+        mode = a.getInteger(R.styleable.RangeSeekBar_range_mode, -1);
         if (mode == -1) mode = MODE_TIME;
         if (mode == MODE_TIME) {
             minValue = 0;
@@ -206,6 +228,8 @@ public class RangeSeekBar extends FrameLayout {
         else return null;
     }
 
+    int last_dx = 0;
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -216,13 +240,12 @@ public class RangeSeekBar extends FrameLayout {
             field_max = getMeasuredWidth() - getPaddingRight() - right_img.getMeasuredWidth();
             field_len = field_max - field_min;
         }
+        last_dx = (int) ((initMinValue - minValue) * field_len * 1.0f / (maxValue - minValue));
+        left_img.offsetLeftAndRight(last_dx);
 
+        last_dx = (int) ((initMaxValue - minValue) * field_len * 1.0f / (maxValue - minValue));
+        right_img.offsetLeftAndRight(last_dx + left_img.getMeasuredWidth());
 
-        lastDx = (int) ((initMinValue - minValue) * 1.0f * field_len / (maxValue - minValue));
-        left_img.offsetLeftAndRight(lastDx);
-
-        lastDx = (int) ((initMaxValue - minValue) * 1.0f * field_len / (maxValue - minValue));
-        right_img.offsetLeftAndRight(lastDx + left_img.getMeasuredWidth());
 
     }
 
@@ -255,15 +278,12 @@ public class RangeSeekBar extends FrameLayout {
         int half_left_img_w = left_img.getMeasuredWidth() / 2;
         left = (int) (left_img.getLeft() + half_left_img_w - pxToDp(rect_w) / 2);
         top = (int) (left_img.getTop() - pxToDp(rect_h + triangle_h));
-        initMinValue = (int) ((left_img.getRight() - field_min) / field_len * (maxValue - minValue) + minValue);
         drawBlueRoundRectWithDownTriangleWithText(canvas, left, top, initMinValue);
 
 
         int half_right_img_w = right_img.getMeasuredWidth() / 2;
         left = (int) (right_img.getLeft() + half_right_img_w - pxToDp(rect_w) / 2);
-//        top = (int) (right_img.getTop() - pxToDp(rect_h + triangle_h));
         top = (int) (right_img.getBottom() + pxToDp(triangle_h));
-        initMaxValue = (int) ((right_img.getLeft() - field_min) / field_len * (maxValue - minValue) + minValue);
         drawBlueRoundRectWithUpTriangleWithText(canvas, left, top, initMaxValue);
     }
 
@@ -271,7 +291,7 @@ public class RangeSeekBar extends FrameLayout {
     private String secToHHMM(int sec) {
 
         int hour, min;
-        hour = sec / 60 / 60;
+        hour = sec / (60 * 60);
         min = (sec - hour * 60 * 60) / 60;
 
         return (hour < 10 ? "0" + hour : "" + hour) + ":" +

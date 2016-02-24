@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.oceancx.androidlib.main.PullToRefreshAndLoadMoreActivity;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,7 +19,7 @@ public class MainActivity extends ListActivity {
     private ActivityInfo target;
     private ArrayList<ActivityInfo> mActivities;
     private String packageName = "com.oceancx.androidlib";
-    private String desiredPackageName = "PullToRefreshAndLoadMoreActivity";
+    private String desiredPackageName = "MiojiRangeSeekBar";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +58,7 @@ public class MainActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent();
-                intent.setClassName(packageName, mActivities.get(position).name);
+                intent.setClassName(packageName, mActivities.get(position+1).name);
                 startActivity(intent);
             }
 

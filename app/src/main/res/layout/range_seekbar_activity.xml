@@ -24,9 +24,8 @@
         android:paddingRight="15dp"
         android:paddingTop="30dp"
         app:init_max_value="36000"
-
         app:init_min_value="3600"
-        app:mode="0">
+        app:range_mode="0">
 
         <ImageView
             android:layout_width="match_parent"
@@ -50,4 +49,6 @@
 
 
     </com.oceancx.rangeseekbar.RangeSeekBar>
+
+ 
 </LinearLayout>

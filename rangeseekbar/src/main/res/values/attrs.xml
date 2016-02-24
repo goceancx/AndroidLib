@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RangeSeekBar">
-        <attr name="mode" format="integer" />
+        <attr name="range_mode" format="integer" />
         <attr name="min_value" format="integer" />
         <attr name="max_value" format="integer" />
         <attr name="init_min_value" format="integer" />
