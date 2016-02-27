@@ -13,6 +13,7 @@ import com.oceancx.androidlib.R;
 
 
 /**
+ * 虚线自定义视图
  * Created by oceancx on 15/12/25.
  */
 public class DashedLine extends View {

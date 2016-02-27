@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ExpandableListView;
 
 /**
+ * 可以放在NestedScrollView中,这样就可以在CoordinatorLayout中联动了
  * Created by oceancx on 15/12/26.
  */
 public class ExpandableListViewForScrollView extends ExpandableListView {

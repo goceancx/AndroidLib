@@ -23,7 +23,6 @@ public class RangeSeekActivity extends AppCompatActivity {
         setContentView(R.layout.range_seekbar_activity);
         seekBar = (RangeSeekBar) findViewById(R.id.seekbar);
 
-
     }
 
 

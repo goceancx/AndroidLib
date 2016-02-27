@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 /**
+ * 用来做遮罩,看似简单,却很实用
  * Created by oceancx on 15/12/11.
  */
 public class TranslusantView extends FrameLayout {

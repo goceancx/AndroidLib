@@ -1,6 +1,8 @@
 package com.oceancx.androidlib.widget;
 
 /**
+ * 依赖于PullToRefreshLibrary
+ * 让RecyclerView支持下拉刷新和上拉加载更多
  * Created by oceancx on 16/1/21.
  */
 public class PullToRefreshRecyclerView{
@@ -27,7 +29,7 @@ public class PullToRefreshRecyclerView{
 //            View mLastChild = mRefreshableView.getChildAt(mRefreshableView.getChildCount() - 1);
 //            int rvPos = mRefreshableView.getChildAdapterPosition(mLastChild);
 //            // 当且仅当第一个可视节点==0 切其top==0的时候 此时rv到达顶部
-//            if (rvPos == checkPos && mLastChild.getBottom() - mLastChild.getTop() == mLastChild.getMeasuredHeight()) {
+//            if (rvPos == checkPos && mLastChild.getBottom() - mLastChild.getTop() == mLastChild.getMeasuredHeight() && mLastChild.getBottom() == mRefreshableView.getBottom()) {
 //                return true;
 //            }
 //        } catch (NullPointerException e) {

@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 /**
+ * 对里面的CompoundButton(RadioButton/CheckBox)设置了TouchDelegate,用来扩大(RadioButton/CheckBox)的点击区域
  * Created by oceancx on 15/12/26.
  */
 public class FrameLayoutCheckBox extends FrameLayout {

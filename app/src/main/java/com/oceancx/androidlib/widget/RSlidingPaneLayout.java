@@ -50,6 +50,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+/**
+ * 完全CopyGoogle的RSlidingPaneLayout,不过让isLayoutRtlSupport()返回true,来让其支持右侧滑
+ */
 
 /**
  * RSlidingPaneLayout provides a horizontal, multi-pane layout for use at the top level

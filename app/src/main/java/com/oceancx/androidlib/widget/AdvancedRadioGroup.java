@@ -11,6 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 
 /**
+ * 大部分代码是从RadioGroup中复制过来的,可以把这个自定义控件当做一个RadioGroup来使用,
+ * 只不过它支持孩子节点为ViewGroup,只要孩子里面有RadioButton就可以
+ * 注意:在RadioGroup中的孩子RadioButton不能设置onCheckedChangeListener
+ * 只能对RadioGroup设置AdvancedRadioGroupCheckChangedListener
  * Created by oceancx on 16/1/7.
  */
 public class AdvancedRadioGroup extends FrameLayout {
