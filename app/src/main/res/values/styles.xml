@@ -9,4 +9,13 @@
 
     </style>
 
+    <style name="match_parent_bt_in_ll">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

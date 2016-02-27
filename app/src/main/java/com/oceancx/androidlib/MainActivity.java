@@ -19,7 +19,7 @@ public class MainActivity extends ListActivity {
     private ActivityInfo target;
     private ArrayList<ActivityInfo> mActivities;
     private String packageName = "com.oceancx.androidlib";
-    private String desiredPackageName = "MiojiRangeSeekBar";
+    private String desiredPackageName = "MediaPlayerActivity";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class MainActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent();
-                intent.setClassName(packageName, mActivities.get(position+1).name);
+                intent.setClassName(packageName, mActivities.get(position + 1).name);
                 startActivity(intent);
             }
 
