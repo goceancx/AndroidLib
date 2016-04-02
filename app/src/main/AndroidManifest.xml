@@ -24,6 +24,7 @@
         <activity android:name=".main.CheckBoxActivity" />
         <activity android:name=".main.PullToRefreshAndLoadMoreActivity" />
         <activity android:name=".main.MediaPlayerActivity" />
+        <activity android:name=".QA.ListViewContainsEditText" />
     </application>
 
 </manifest>

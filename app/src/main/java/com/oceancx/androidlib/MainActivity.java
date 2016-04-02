@@ -19,7 +19,7 @@ public class MainActivity extends ListActivity {
     private ActivityInfo target;
     private ArrayList<ActivityInfo> mActivities;
     private String packageName = "com.oceancx.androidlib";
-    private String desiredPackageName = "MediaPlayerActivity";
+    private String desiredPackageName = "ListViewContainsEditText";
 
 
     protected void onCreate(Bundle savedInstanceState) {
